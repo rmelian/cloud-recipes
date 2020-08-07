@@ -1,0 +1,17 @@
+service: serverless-python
+
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, "dev"}
+
+functions:
+  uploadHandler:
+    handler: lib/upload-handler.handle
+    events:
+      #https://www.serverless.com/framework/docs/providers/aws/events/s3/
+      - s3:
+          bucket: serverless-python-upload-bucket
+          event: s3:ObjectCreated:*
