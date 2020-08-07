@@ -7,7 +7,7 @@ A serverless application that demonstrates how to trigger a lambda function afte
 ![Diagram](../assets/diagram.png)
 * A client is a person or system who uploads files to an S3 bucket
 * An S3 bucket publishes events after files are uploaded
-* A lambda function invoked with context information about the S3 bucket and file metadata
+* A lambda function is invoked with context information about the S3 bucket and file metadata
 
 
 ### Tech Stack
