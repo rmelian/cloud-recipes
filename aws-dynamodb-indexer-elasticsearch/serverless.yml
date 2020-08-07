@@ -78,4 +78,4 @@ resources:
               Condition:
                 IpAddress:
                   aws:SourceIp: 
-                    - "73.232.50.121"
+                    - "10.10.10.10"
