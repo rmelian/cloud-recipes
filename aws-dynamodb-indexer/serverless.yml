@@ -1,0 +1,81 @@
+service: indexer
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-2'}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
+        - es:ESHttpPost
+        - es:ESHttpPut
+        - es:ESHttpDelete
+      Resource: "*"
+
+functions:
+  indexer:    
+    handler: handler.index
+    environment:
+      ES_HOST: ''
+    events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt: [EpisodeMetadata, StreamArn]
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+
+resources:
+  Resources: 
+    EpisodeMetadata:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${self:provider.stage}-episodes
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
+    EpisodeSearch:
+      Type: AWS::Elasticsearch::Domain
+      Properties:
+        EBSOptions:
+          EBSEnabled: true
+          VolumeType: gp2
+          VolumeSize: 10
+        ElasticsearchClusterConfig:
+          InstanceType: t2.small.elasticsearch
+          InstanceCount: 1
+          DedicatedMasterEnabled: false
+          ZoneAwarenessEnabled: false
+        ElasticsearchVersion: 7.7
+
+        # DANGER ZONE
+        # Don't do this on production
+        AccessPolicies:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                AWS: '*'
+              Action: 'es:*'
+              Resource: '*'
+              Condition:
+                IpAddress:
+                  aws:SourceIp: 
+                    - "73.232.50.121"
