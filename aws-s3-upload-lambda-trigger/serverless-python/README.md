@@ -1,7 +1,7 @@
 # S3 upload trigger lambda function
 
 ### What is this?
-A serverless application that demonstrates how to trigger a lambda function after a file is uploaded into an S3 bucket. This version is using [AWS CDK](https://aws.amazon.com/cdk/)
+A serverless application that demonstrates how to trigger a lambda function after a file is uploaded into an S3 bucket. This version is using the [Serverless Framework](https://www.serverless.com/)
 
 ### The Architecture
 ![Diagram](../assets/diagram.png)
@@ -11,27 +11,25 @@ A serverless application that demonstrates how to trigger a lambda function afte
 
 
 ### Tech Stack
-* [AWS CDK](https://aws.amazon.com/cdk/)
+* [Serverless Framework](https://www.serverless.com/)
 * [AWS Lambda](https://aws.amazon.com/lambda/)
 * [Amazon S3](https://aws.amazon.com/s3/)
-* [TypeScript](https://www.typescriptlang.org/)
+* [Python](https://www.python.org/)
 
 
 ### Prerequisite
-* [TypeScript](https://www.typescriptlang.org/)
-* [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
+* [Serverless framework](https://www.serverless.com/framework/docs/providers/aws/guide/installation/)
+* [Python](https://wiki.python.org/moin/BeginnersGuide/Download)
 
 
 ### How to deploy it
 ```
-npm install
-cdk bootstrap
-cdk deploy
+sls deploy
 ```
 
 ### How to remove it
 ```
-cdk destroy
+sls remove
 ```
 
 
