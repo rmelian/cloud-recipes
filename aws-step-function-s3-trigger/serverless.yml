@@ -1,0 +1,61 @@
+service: step-trigger
+
+plugins:
+  - serverless-python-requirements
+  - serverless-step-functions
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, "dev"}
+  iamRoleStatements:
+    - Effect: "Allow"        
+      Action:
+        - states:*
+      Resource: "*"
+
+functions:
+
+  workflowTrigger:
+    handler: functions/workflow-trigger.handler
+    environment:
+      INGEST_WORKFLOW_ARN: ${self:resources.Outputs.IngestWorkflow.Value}
+    events:
+      #https://www.serverless.com/framework/docs/providers/aws/events/s3/
+      - s3:
+          bucket: ${self:service}-${self:provider.stage}-upload-bucket-2
+          event: s3:ObjectCreated:*
+          rules:
+            # - prefix: uploads/
+            - suffix: .mp4
+
+stepFunctions:
+  validate: true
+  stateMachines:
+    IngestWorkflow:
+      id: IngestWorkflow
+      name: ${self:service}-${self:provider.stage}-IngestWorkflow
+      # events:
+      #   - sns: 
+      #       arn: !Ref UploadTopic
+      #       topicName: upload-topic
+      definition:
+        Comment: "Ingestion workflow"
+        StartAt: AssetManager
+        States:
+          AssetManager:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [assetManager, Arn]
+            End: true
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+
+resources:
+  Resources: 
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-${self:provider.stage}-store-bucket-2
