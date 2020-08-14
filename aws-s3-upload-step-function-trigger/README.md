@@ -1,4 +1,4 @@
-# S3 upload trigger lambda function
+# Trigger a step function after file uploaded to an S3 bucket
 
 ### What is this?
 A serverless application that demonstrates how to trigger a step function after a file is uploaded into an S3 bucket.
