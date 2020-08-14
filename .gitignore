@@ -1,1 +1,24 @@
-**/*.mp4
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+*/__pycache__/
+.pytest_cache/
+node_modules/
+.vscode/
+
+# Serverless directories
+.serverless

@@ -1,0 +1,60 @@
+service: my-sm
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, "dev"}
+
+functions:
+  StateMachineTrigger:
+    handler: lib/trigger.handler
+    events:
+      - s3:
+          bucket: ${self:service}-${self:provider.stage}-upload-bucket
+          event: s3:ObjectCreated:*
+    environment:
+      MY_STATE_MACHINE_ARN: ${self:resources.Outputs.MyStateMachine.Value}          
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - states:*
+        Resource: "*"
+
+stepFunctions:
+  stateMachines:
+    MyStateMachine:
+      id: MyStateMachine
+      definition:
+        StartAt: ValidateImage
+        States:
+          ValidateImage:
+            Type: Pass
+            Result: "Valid"
+            Next: GenerateThumbnail
+          GenerateThumbnail:
+            Type: Pass
+            Result: "Thumbnail created"
+            Next: NotifyUser
+          NotifyUser:
+            Type: Pass
+            Result: "Notification sent"
+            End: true
+
+resources:
+  Outputs:
+    MyStateMachine:
+      Description: The ARN of the example state machine
+      Value:
+        Ref: MyStateMachine            
+
+
+plugins:
+  - serverless-step-functions
+  - serverless-iam-roles-per-function
+
+package:
+  individually: true
+  exclude:
+    - '**/*'
+  include:
+    - lib/**

@@ -1,0 +1,14 @@
+{
+  "name": "aws-s3-upload-step-function-trigger",
+  "version": "1.0.0",
+  "author": "raisel melian",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-step-functions": "^2.21.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
