@@ -1,0 +1,5 @@
+Resources:
+  StoreBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.STORE_BUCKET}

@@ -1,0 +1,20 @@
+service: accessless-monkey
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, "dev"}
+  versionFunctions: false
+  memorySize: 512
+  environment:
+    BUCKET: ''
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:*'
+      Resource: '*'  
+
+functions:
+  s3Attacker:
+    handler: handler.get_access
+    role: arn:aws:iam::839734283765:role/s3-bucket-access-ray-store-bucket-role

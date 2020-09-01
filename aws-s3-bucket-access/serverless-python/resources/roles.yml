@@ -1,0 +1,18 @@
+Resources:
+  StoreBucketRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ${self:service}-${self:provider.stage}-store-bucket-role
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: 
+              - sts:AssumeRole
+      Path: /              
+      ManagedPolicyArns:
+        - Ref: S3AccessPolicy
+        - Ref: SLSDefaultPermissionsPolicy

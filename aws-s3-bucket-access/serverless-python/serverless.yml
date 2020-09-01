@@ -1,0 +1,19 @@
+service: s3-bucket-access
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, "dev"}
+  versionFunctions: false
+
+custom:
+  STORE_BUCKET: ${self:service}-${self:provider.stage}-store
+
+resources:
+  - ${file(resources/s3.yml)}
+  - ${file(resources/policies.yml)}  
+  - ${file(resources/roles.yml)}
+
+
+plugins:
+  - serverless-pseudo-parameters  
