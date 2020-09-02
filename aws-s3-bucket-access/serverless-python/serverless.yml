@@ -4,7 +4,6 @@ provider:
   name: aws
   runtime: python3.8
   stage: ${opt:stage, "dev"}
-  versionFunctions: false
 
 custom:
   STORE_BUCKET: ${self:service}-${self:provider.stage}-store

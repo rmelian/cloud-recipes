@@ -5,7 +5,7 @@ A serverless application that demonstrates how to restrict an S3 bucket access t
 
 ### The Architecture
 ![Diagram](serverless-python/assets/diagram.png)
-* An S3 bucket restrict access to a specific role
+* An S3 bucket restrict access to a specific role. Only Users/applications with that role will be able to access the bucket
 * A lambda function with the correct role assigned have access to the bucket information
 * A monkey(lambda function) with the wrong role can't access the bucket information
 
@@ -29,5 +29,5 @@ sls deploy
 sls remove
 ```
 
-### Author: Raisel Melian
+### Connect with me:
 * [Twitter](https://twitter.com/raiselmelian)

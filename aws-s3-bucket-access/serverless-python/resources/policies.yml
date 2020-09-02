@@ -37,6 +37,7 @@ Resources:
               - s3:*
             Resource:
               - 'arn:aws:s3:::${self:custom.STORE_BUCKET}'
+              - 'arn:aws:s3:::${self:custom.STORE_BUCKET}/*'
 
   # https://www.serverless.com/framework/docs/providers/aws/guide/iam/
   SLSDefaultPermissionsPolicy:
@@ -58,12 +59,4 @@ Resources:
                   - 'arn:aws:logs'
                   - Ref: 'AWS::Region'
                   - Ref: 'AWS::AccountId'
-                  - 'log-group:/aws/lambda/*:*:*'                        
-          - Effect: Allow
-            Action:
-              - s3:PutObject
-            Resource:
-              Fn::Join:
-                - ""
-                - - "arn:aws:s3:::"
-                  - "Ref" : "ServerlessDeploymentBucket"
+                  - 'log-group:/aws/lambda/*:*:*'
